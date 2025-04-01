@@ -1,0 +1,93 @@
+#include <GL/glut.h> 
+#include "utils.h"
+#include <stdio.h>
+#include <math.h>
+
+void init (void)
+{
+	glClearColor (1.0, 1.0, 1.0, 0.0); 
+	glMatrixMode (GL_PROJECTION); 
+	gluOrtho2D (0.0, 200.0, 0.0, 150.0);
+}
+
+void shapeA ()
+{
+	glColor3f (0.0, 0.0, 0.0); 
+	glBegin (GL_LINES);
+	glVertex2i (60, 70); 
+	glVertex2i (10, 20); 
+	glVertex2i (30, 90); 
+	glVertex2i (50, 20); 
+	glVertex2i (0, 70); 
+	glEnd ();
+	glFlush();
+}
+
+void shapeB ()
+{
+	glColor3f (0.0, 0.0, 0.0); 
+	glBegin (GL_LINE_STRIP);
+	glVertex2i (130, 70); 
+	glVertex2i (80, 20); 
+	glVertex2i (100, 90); 
+	glVertex2i (120, 20); 
+	glVertex2i (70, 70); 
+	glEnd ();
+	glFlush (); 
+}
+
+void shapeC ()
+{
+	glColor3f (0.0, 0.0, 0.0); 
+	glBegin (GL_LINE_LOOP);
+	glVertex2i (200, 70); 
+	glVertex2i (150, 20); 
+	glVertex2i (170, 90); 
+	glVertex2i (190, 20); 
+	glVertex2i (140, 70); 
+	glEnd ();
+	glFlush();
+}
+
+void drawShapes() {
+	glClear (GL_COLOR_BUFFER_BIT); 
+	shapeA();
+	shapeB();
+	shapeC();
+}
+
+double precise(double value) {
+	if (value < 0) {
+		return floor(value);
+	} else {
+		return ceil(value);
+	}
+}
+
+Point *circleSegments(Circle circle, size_t segments) {
+	double angle = 360.0 / segments;
+	Point *points = (Point *)malloc(sizeof(Point) * segments);
+	for (int i=0; i < segments; i++) {
+		printf("%.2f\n", round(cos(i*angle)));
+		points[i].x = circle.center.x + (precise(cos(i*angle)) * circle.r);
+		points[i].y = circle.center.y + (precise(sin(i*angle)) * circle.r);
+		printf("%d\t%d\n", points[i].x, points[i].y);
+	}
+	printf("%.2f\n", angle);
+	return points;
+}
+
+int main (int argc, char** argv)
+{
+	//	glutInit (&argc, argv); 
+	//	glutInitDisplayMode (GLUT_SINGLE | GLUT_RGB); 
+	//	glutInitWindowPosition (50, 100); 
+	//	glutInitWindowSize (1500, 800); 
+	//	glutCreateWindow ("Assignment 1"); 
+	//	init (); 
+	//	glutDisplayFunc (drawShapes); 
+	//	glutMainLoop (); 
+	Point p = {100,100};
+	Circle c = {p, 20};	
+	circleSegments(c, 4);	
+}
